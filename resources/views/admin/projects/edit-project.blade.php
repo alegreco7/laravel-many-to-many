@@ -30,6 +30,21 @@
                             <label for="description" class="form-label">Modifica La descrizione:</label>
                             <textarea name="description" id="description" class="form-control">{{ old('description') ?? $project['description'] }}</textarea>
                         </div>
+                        <div class="mb-3">
+                            Tecnologie:
+                            @foreach ($technologies as $tech)
+                                <div class="form-check form-check-inline">
+
+                                    <input class="form-check-input" type="checkbox" name="checks[]"
+                                        id="check-{{ $tech->id }}" value="{{ $tech->id }}"
+                                        @checked(in_array($tech->id, old('checks', [])) ||
+                                                in_array($tech->id, $project->technologies->keyby('id')->keys()->toArray()))>
+
+                                    <label class="form-check-label"
+                                        for="check-{{ $tech->id }}">{{ $tech->name }}</label>
+                                </div>
+                            @endforeach
+                        </div>
                         <div class="d-flex gap-4 mb-3">
                             <div class="">
                                 <label for="start_date">Modifica data inizio</label>
@@ -45,8 +60,8 @@
                                 <label for="type_id">Modifica il tipo:</label>
                                 <select name="type_id" id="type_id" class="form-select">
                                     @foreach ($types as $type)
-                                        <option value="{{ $type->id }}" @selected($type->id == old('type_id', $project->type_id ? $project->type_id : ''))>{{ $type->name }}
-                                        </option>
+                                        <option value="{{ $type->id }}" @selected($type->id == old('type_id', $project->type_id ? $project->type_id : ''))>
+                                            {{ $type->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
